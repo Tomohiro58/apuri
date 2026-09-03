@@ -1,12 +1,141 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My GitHub Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>推しサカ！ | あなたにぴったりの推し選手診断</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .hero-image {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #1b5e20;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        p.description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .features {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .feature-item {
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-item span {
+            margin-right: 8px;
+        }
+
+        .btn-start {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 15px 0;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-start:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+        }
+
+        .time-note {
+            font-size: 11px;
+            color: #999;
+            margin-top: 12px;
+        }
+    </style>
 </head>
 <body>
-<h1>ようこそ！</h1>
-<p>これは GitHub Pages を使ったウェブサイトです。</p>
+
+    <div class="container">
+        <div class="hero-image">⚽️✨</div>
+        <div class="badge">データスタジアム連携企画</div>
+        
+        <h1>推しサカ！<br>〜推し選手発見診断〜</h1>
+        
+        <p class="description">
+            ルールがわからなくても大丈夫！<br>
+            直感で答えるだけで、データ分析から<br>あなたにぴったりの「推し選手」を弾き出します。
+        </p>
+
+        <div class="features">
+            <div class="feature-item"><span>⏱️</span> 所要時間はたったの1分（全4問）</div>
+            <div class="feature-item"><span>📊</span> プレーデータを独自の指標でビジュアル化</div>
+            <div class="feature-item"><span>🌟</span> 運命の選手との出会いが観戦をもっと楽しく！</div>
+        </div>
+
+        <a href="#" class="btn-start">診断をはじめる</a>
+        
+        <div class="time-note">※登録不要・完全無料</div>
+    </div>
+
 </body>
 </html>
