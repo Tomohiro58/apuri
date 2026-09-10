@@ -137,9 +137,11 @@ button:hover{
       <input type="radio" name="q4" />運動量が多い<br />
 
       <br />
-      <button type="button" onclick="showBranch()">次へ</button>
-    </form>
+      <button type="button" onclick="showBranch()">
+        次へ
+      </button>
 
+  
     <div id="branchQuestion"></div>
     
     <div id="resultButton">
@@ -148,6 +150,7 @@ button:hover{
         </a>
 
     </div>
+   </form>
     <script>
       function showBranch() {
         const q1 = document.querySelector('input[name="q1"]:checked');
