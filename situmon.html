@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>推し選手診断ページ</title>
+  </head>
+  <body>
+    <h1>推し選手診断ページ</h1>
+
+    <form id="diagnosisForm">
+      <!-- Q1 -->
+      <h3>Q1. 好きな選手のプレースタイルは？</h3>
+
+      <input
+        type="radio"
+        name="q1"
+        value="pass"
+      />正確なパスでチームを動かす<br />
+      <input
+        type="radio"
+        name="q1"
+        value="dribble"
+      />自分でドリブルして突破する<br />
+      <input type="radio" name="q1" value="shoot" />シュートでゴールを狙う<br />
+      <input type="radio" name="q1" value="defense" />守備で相手を止める<br />
+
+      <!-- Q2 -->
+      <h3>Q2. チームを支える選手といえば？</h3>
+
+      <input type="radio" name="q2" />パスで攻撃を組み立てる選手<br />
+      <input type="radio" name="q2" />ゴールを決める選手<br />
+      <input type="radio" name="q2" />スピードで突破する選手<br />
+      <input type="radio" name="q2" />守備でピンチを防ぐ選手<br />
+
+      <!-- Q3 -->
+      <h3>Q3. ゴールにつながるプレーで好きなのは？</h3>
+
+      <input type="radio" name="q3" />クロスからのゴール<br />
+      <input type="radio" name="q3" />ミドルシュート<br />
+      <input type="radio" name="q3" />ドリブルからのゴール<br />
+      <input type="radio" name="q3" />パスワークからのゴール<br />
+
+      <!-- Q4 -->
+      <h3>Q4. チームの強さを感じるのは？</h3>
+
+      <input type="radio" name="q4" />ボールを長く保持できる<br />
+      <input type="radio" name="q4" />得点をたくさん決める<br />
+      <input type="radio" name="q4" />守備が安定している<br />
+      <input type="radio" name="q4" />運動量が多い<br />
+
+      <br />
+      <button type="button" onclick="showBranch()">次へ</button>
+    </form>
+
+    <div id="branchQuestion"></div>
+
+    <script>
+      function showBranch() {
+        const q1 = document.querySelector('input[name="q1"]:checked');
+
+        if (!q1) {
+          alert("Q1を選択してください");
+          return;
+        }
+
+        let html = "";
+
+        // パス型
+        if (q1.value === "pass") {
+          html += `
+        <h3>Q5. 試合を見るとき気になるのは？</h3>
+
+        <input type="radio" name="q5">
+        どちらが試合を支配しているか<br>
+
+        <input type="radio" name="q5">
+        パスでチャンスを作ること<br>
+
+        <h3>Q6. 推し選手として応援したいのは？</h3>
+
+        <input type="radio" name="q6">
+        試合を組み立てる選手<br>
+
+        <input type="radio" name="q6">
+        アシストする選手<br>
+        `;
+        }
+
+        // ドリブル型
+        else if (q1.value === "dribble") {
+          html += `
+        <h3>Q5. 好きなプレーは？</h3>
+
+        <input type="radio" name="q5">
+        ドリブルで抜く<br>
+
+        <input type="radio" name="q5">
+        スピードで先に追いつく<br>
+
+        <h3>Q6. チームのヒーローだと思うのは？</h3>
+
+        <input type="radio" name="q6">
+        ドリブルで流れを変えた選手<br>
+
+        <input type="radio" name="q6">
+        ゴールを決めた選手<br>
+        `;
+        }
+
+        // シュート型
+        else if (q1.value === "shoot") {
+          html += `
+        <h3>Q5. PKで一番かっこいいと思うのは？</h3>
+
+        <input type="radio" name="q5">
+        強烈なシュートを決める<br>
+
+        <input type="radio" name="q5">
+        冷静にコースへ決める<br>
+
+        <h3>Q6. 推し選手に期待する活躍は？</h3>
+
+        <input type="radio" name="q6">
+        最後まで決定的な仕事をする<br>
+
+        <input type="radio" name="q6">
+        チームが苦しい時に活躍する<br>
+        `;
+        }
+
+        // 守備型
+        else if (q1.value === "defense") {
+          html += `
+        <h3>Q5. 守備の選手に魅力を感じるのは？</h3>
+
+        <input type="radio" name="q5">
+        決定的なシュートを止める<br>
+
+        <input type="radio" name="q5">
+        相手からボールを奪う<br>
+
+        <h3>Q6. 推し選手として応援したいのは？</h3>
+
+        <input type="radio" name="q6">
+        チームを守る選手<br>
+
+        <input type="radio" name="q6">
+        最後の砦となる選手<br>
+        `;
+        }
+
+        document.getElementById("branchQuestion").innerHTML = html;
+      }
+    </script>
+  </body>
+</html>
