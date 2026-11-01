@@ -2,255 +2,172 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-
-    <!-- スマホ対応に重要 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>推し選手診断 | 分析フォーム</title>
 
-    <title>推し選手診断ページ</title>
+    <!-- 共通CSSファイルを読み込み -->
+    <link rel="stylesheet" href="style.css" />
 
     <style>
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Yu Gothic", sans-serif;
-        background-color: #f0f8ff;
-        margin: 0;
-        padding: 20px;
-      }
-
-      .container {
-        width: 100%;
-        max-width: 800px;
-        margin: auto;
-      }
-
-      h1 {
+      /* 質問ページ固有の追加・調整スタイル */
+      .page-header {
         text-align: center;
-        color: #1e90ff;
-        font-size: 32px;
-        margin-bottom: 30px;
+        padding: 24px 0 32px;
+      }
+      .page-header h1 {
+        font-size: clamp(24px, 4vw, 36px);
+        letter-spacing: .05em;
+        margin-top: 8px;
       }
 
-      /* 質問をカード化 */
+      /* 質問カードパネル */
       .question-box {
-        background: white;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background: var(--panel);
+        border: 1px solid var(--line);
+        clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+        padding: 24px;
+        margin-bottom: 24px;
       }
 
-      h3 {
-        color: #333;
-        font-size: 20px;
-        margin-top: 25px;
-        margin-bottom: 15px;
-      }
-
-      /* 選択肢 */
-      .option {
-        display: block;
-        background: #f8fbff;
-        border: 1px solid #d9eaf7;
-        border-radius: 8px;
-        padding: 12px;
-        margin: 8px 0;
-        cursor: pointer;
+      /* 質問タイトル（アクセントライン付き） */
+      .question-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text);
         font-size: 16px;
-        line-height: 1.5;
-        transition: 0.2s;
+        font-weight: 800;
+        margin: 24px 0 14px;
+      }
+      .question-title:first-child {
+        margin-top: 0;
+      }
+      .question-title::before {
+        content: "";
+        display: block;
+        width: 4px;
+        height: 16px;
+        background: var(--lime);
       }
 
+      /* 選択肢（ラジオボタンカード） */
+      .option {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--panel-light);
+        border: 1px solid var(--line);
+        padding: 14px 16px;
+        margin: 10px 0;
+        cursor: pointer;
+        font-size: 14px;
+        color: #c2d2dd;
+        transition: all 0.2s ease;
+      }
       .option:hover {
-        background-color: #eaf6ff;
-        border-color: #87cefa;
+        border-color: var(--cyan);
+        background: rgba(69, 228, 232, 0.08);
+        color: var(--text);
       }
 
-      /* ラジオボタン */
+      /* ラジオボタン自体のカスタムスタイル */
       input[type="radio"] {
-        margin-right: 10px;
-        transform: scale(1.2);
+        appearance: none;
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--muted);
+        border-radius: 50%;
+        outline: none;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+      }
+      input[type="radio"]:checked {
+        border-color: var(--lime);
+        background: var(--lime);
+        box-shadow: 0 0 10px rgba(183, 255, 74, 0.5);
+      }
+      
+      /* 選択された状態の親ラベル */
+      .option:has(input[type="radio"]:checked) {
+        border-color: var(--lime);
+        background: rgba(183, 255, 74, 0.06);
+        color: var(--lime);
+        font-weight: 700;
       }
 
-      /* 選択したとき */
-      input[type="radio"]:checked + span {
-        font-weight: bold;
-        color: #1e90ff;
-      }
-
-      /* 次へボタン */
-      button {
+      /* アクションボタン（共通ボタンの拡張） */
+      .btn-submit {
         display: block;
         width: 100%;
-        max-width: 300px;
-        margin: 25px auto 0;
-
-        background: #1e90ff;
-        color: white;
-        border: none;
-
-        padding: 14px 24px;
-        border-radius: 8px;
-
+        max-width: 320px;
+        margin: 28px auto 0;
+        min-height: 50px;
+        background: var(--lime);
+        color: #07111f;
+        border: 1px solid var(--lime);
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: .08em;
         cursor: pointer;
-        font-size: 17px;
-        font-weight: bold;
-
-        transition: 0.2s;
+        transition: transform .2s, background .2s;
+      }
+      .btn-submit:hover {
+        background: #d0ff86;
+        transform: translateY(-2px);
+      }
+      .btn-submit:active {
+        transform: translateY(0);
       }
 
-      button:hover {
-        background: #187bcd;
-      }
-
-      button:active {
-        transform: scale(0.98);
-      }
-
-      #branchQuestion {
-        margin-top: 30px;
-      }
-
-      /* 結果ボタン */
+      /* 結果ボタン領域 */
       #resultButton {
         display: none;
         text-align: center;
-        margin-top: 35px;
+        margin-top: 32px;
       }
-
-      .btn-start {
-        display: inline-block;
-
-        background: linear-gradient(135deg, #1e90ff, #00bfff);
-
-        color: white;
+      .btn-result {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 360px;
+        min-height: 54px;
+        background: linear-gradient(135deg, var(--lime), var(--cyan));
+        color: #07111f;
         text-decoration: none;
-
-        font-size: 20px;
-        font-weight: bold;
-
-        padding: 15px 40px;
-        border-radius: 50px;
-
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-        transition: all 0.3s ease;
+        font-size: 16px;
+        font-weight: 900;
+        letter-spacing: .1em;
+        border: none;
+        box-shadow: 0 0 20px rgba(183, 255, 74, 0.3);
+        transition: all 0.2s ease;
       }
-
-      .btn-start:hover {
-        background: linear-gradient(135deg, #187bcd, #009acd);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-      }
-
-      .btn-start:active {
-        transform: translateY(1px);
-      }
-
-
-      /* =========================
-         スマホ用
-         ========================= */
-      @media screen and (max-width: 600px) {
-
-        body {
-          padding: 12px;
-        }
-
-        .container {
-          width: 100%;
-        }
-
-        h1 {
-          font-size: 25px;
-          margin-top: 10px;
-          margin-bottom: 25px;
-        }
-
-        .question-box {
-          padding: 15px;
-          border-radius: 8px;
-        }
-
-        h3 {
-          font-size: 18px;
-          line-height: 1.5;
-          margin-top: 22px;
-        }
-
-        .option {
-          font-size: 15px;
-          padding: 13px 10px;
-          margin: 9px 0;
-        }
-
-        input[type="radio"] {
-          transform: scale(1.3);
-          margin-right: 8px;
-        }
-
-        button {
-          width: 90%;
-          max-width: none;
-          font-size: 17px;
-          padding: 15px;
-        }
-
-        .btn-start {
-          width: 90%;
-          font-size: 18px;
-          padding: 15px 10px;
-        }
-
-        #resultButton {
-          margin-top: 30px;
-        }
-      }
-
-
-      /* =========================
-         さらに小さいスマホ用
-         ========================= */
-      @media screen and (max-width: 400px) {
-
-        body {
-          padding: 8px;
-        }
-
-        h1 {
-          font-size: 22px;
-        }
-
-        h3 {
-          font-size: 17px;
-        }
-
-        .option {
-          font-size: 14px;
-          padding: 12px 8px;
-        }
-
-        .btn-start {
-          font-size: 17px;
-        }
+      .btn-result:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 28px rgba(69, 228, 232, 0.5);
       }
     </style>
   </head>
 
   <body>
-
-    <div class="container">
-
-      <h1>⚽ 推し選手診断 ⚽</h1>
+    <div class="page">
+      
+      <!-- ヘッダー -->
+      <div class="page-header">
+        <div class="eyebrow" style="justify-content: center;">DIAGNOSTIC PROCESS</div>
+        <h1>⚽ 推し選手分析診断</h1>
+      </div>
 
       <div id="diagnosisForm">
 
-        <!-- Q1 -->
+        <!-- 前半質問グループ Q1〜Q4 -->
         <div class="question-box">
 
-          <h3>Q1. 好きな選手のプレースタイルは？</h3>
+          <!-- Q1 -->
+          <div class="question-title">Q1. 好きな選手のプレースタイルは？</div>
 
           <label class="option">
             <input type="radio" name="q1" value="pass">
@@ -274,95 +191,93 @@
 
 
           <!-- Q2 -->
-          <h3>Q2. チームを支える選手といえば？</h3>
+          <div class="question-title">Q2. チームを支える選手といえば？</div>
 
           <label class="option">
-            <input type="radio" name="q2">
+            <input type="radio" name="q2" value="buildUp">
             <span>パスで攻撃を組み立てる選手</span>
           </label>
 
           <label class="option">
-            <input type="radio" name="q2">
+            <input type="radio" name="q2" value="scorer">
             <span>ゴールを決める選手</span>
           </label>
 
           <label class="option">
-            <input type="radio" name="q2">
+            <input type="radio" name="q2" value="speed">
             <span>スピードで突破する選手</span>
           </label>
 
           <label class="option">
-            <input type="radio" name="q2">
+            <input type="radio" name="q2" value="stopper">
             <span>守備でピンチを防ぐ選手</span>
           </label>
 
 
           <!-- Q3 -->
-          <h3>Q3. ゴールにつながるプレーで好きなのは？</h3>
+          <div class="question-title">Q3. ゴールにつながるプレーで好きなのは？</div>
 
           <label class="option">
-            <input type="radio" name="q3">
+            <input type="radio" name="q3" value="cross">
             <span>クロスからのゴール</span>
           </label>
 
           <label class="option">
-            <input type="radio" name="q3">
+            <input type="radio" name="q3" value="middle">
             <span>ミドルシュート</span>
           </label>
 
           <label class="option">
-            <input type="radio" name="q3">
+            <input type="radio" name="q3" value="dribbleGoal">
             <span>ドリブルからのゴール</span>
           </label>
 
           <label class="option">
-            <input type="radio" name="q3">
+            <input type="radio" name="q3" value="passWork">
             <span>パスワークからのゴール</span>
           </label>
 
 
           <!-- Q4 -->
-          <h3>Q4. チームの強さを感じるのは？</h3>
+          <div class="question-title">Q4. チームの強さを感じるのは？</div>
 
           <label class="option">
-            <input type="radio" name="q4">
+            <input type="radio" name="q4" value="possession">
             <span>ボールを長く保持できる</span>
           </label>
 
           <label class="option">
-            <input type="radio" name="q4">
+            <input type="radio" name="q4" value="highScore">
             <span>得点をたくさん決める</span>
           </label>
 
           <label class="option">
-            <input type="radio" name="q4">
+            <input type="radio" name="q4" value="solidDefense">
             <span>守備が安定している</span>
           </label>
 
           <label class="option">
-            <input type="radio" name="q4">
+            <input type="radio" name="q4" value="stamina">
             <span>運動量が多い</span>
           </label>
 
 
-          <button type="button" onclick="showBranch()">
-            次へ
+          <button type="button" class="btn-submit" onclick="showBranch()">
+            分析を進める（次へ）
           </button>
 
         </div>
 
 
-        <!-- 分岐質問 -->
+        <!-- 動的分岐質問挿入エリア -->
         <div id="branchQuestion"></div>
 
 
         <!-- 結果ボタン -->
         <div id="resultButton">
-
-          <a href="RESULT.html" class="btn-start">
-            診断結果を見る
+          <a href="RESULT.html" class="btn-result">
+            分析結果を表示する ➔
           </a>
-
         </div>
 
       </div>
@@ -370,12 +285,8 @@
 
 
     <script>
-
       function showBranch() {
-
-        const q1 = document.querySelector(
-          'input[name="q1"]:checked'
-        );
+        const q1 = document.querySelector('input[name="q1"]:checked');
 
         if (!q1) {
           alert("Q1を選択してください");
@@ -384,35 +295,28 @@
 
         let html = "";
 
-
         // パス型
         if (q1.value === "pass") {
-
-          html += `
+          html = `
           <div class="question-box">
 
-            <h3>Q5. 試合を見るとき気になるのは？</h3>
-
+            <div class="question-title">Q5. 試合を見るとき気になるのは？</div>
             <label class="option">
-              <input type="radio" name="q5">
+              <input type="radio" name="q5" value="control">
               <span>どちらが試合を支配しているか</span>
             </label>
-
             <label class="option">
-              <input type="radio" name="q5">
+              <input type="radio" name="q5" value="chance">
               <span>パスでチャンスを作ること</span>
             </label>
 
-
-            <h3>Q6. 推し選手として応援したいのは？</h3>
-
+            <div class="question-title">Q6. 推し選手として応援したいのは？</div>
             <label class="option">
-              <input type="radio" name="q6">
+              <input type="radio" name="q6" value="playmaker">
               <span>試合を組み立てる選手</span>
             </label>
-
             <label class="option">
-              <input type="radio" name="q6">
+              <input type="radio" name="q6" value="assister">
               <span>アシストする選手</span>
             </label>
 
@@ -420,35 +324,28 @@
           `;
         }
 
-
         // ドリブル型
         else if (q1.value === "dribble") {
-
-          html += `
+          html = `
           <div class="question-box">
 
-            <h3>Q5. 好きなプレーは？</h3>
-
+            <div class="question-title">Q5. 好きなプレーは？</div>
             <label class="option">
-              <input type="radio" name="q5">
+              <input type="radio" name="q5" value="skill">
               <span>ドリブルで抜く</span>
             </label>
-
             <label class="option">
-              <input type="radio" name="q5">
+              <input type="radio" name="q5" value="sprint">
               <span>スピードで先に追いつく</span>
             </label>
 
-
-            <h3>Q6. チームのヒーローだと思うのは？</h3>
-
+            <div class="question-title">Q6. チームのヒーローだと思うのは？</div>
             <label class="option">
-              <input type="radio" name="q6">
+              <input type="radio" name="q6" value="gameChanger">
               <span>ドリブルで流れを変えた選手</span>
             </label>
-
             <label class="option">
-              <input type="radio" name="q6">
+              <input type="radio" name="q6" value="heroScorer">
               <span>ゴールを決めた選手</span>
             </label>
 
@@ -456,35 +353,28 @@
           `;
         }
 
-
         // シュート型
         else if (q1.value === "shoot") {
-
-          html += `
+          html = `
           <div class="question-box">
 
-            <h3>Q5. PKで一番かっこいいと思うのは？</h3>
-
+            <div class="question-title">Q5. PKで一番かっこいいと思うのは？</div>
             <label class="option">
-              <input type="radio" name="q5">
+              <input type="radio" name="q5" value="power">
               <span>強烈なシュートを決める</span>
             </label>
-
             <label class="option">
-              <input type="radio" name="q5">
+              <input type="radio" name="q5" value="placement">
               <span>冷静にコースへ決める</span>
             </label>
 
-
-            <h3>Q6. 推し選手に期待する活躍は？</h3>
-
+            <div class="question-title">Q6. 推し選手に期待する活躍は？</div>
             <label class="option">
-              <input type="radio" name="q6">
+              <input type="radio" name="q6" value="decisive">
               <span>最後まで決定的な仕事をする</span>
             </label>
-
             <label class="option">
-              <input type="radio" name="q6">
+              <input type="radio" name="q6" value="clutch">
               <span>チームが苦しい時に活躍する</span>
             </label>
 
@@ -492,35 +382,28 @@
           `;
         }
 
-
         // 守備型
         else if (q1.value === "defense") {
-
-          html += `
+          html = `
           <div class="question-box">
 
-            <h3>Q5. 守備の選手に魅力を感じるのは？</h3>
-
+            <div class="question-title">Q5. 守備の選手に魅力を感じるのは？</div>
             <label class="option">
-              <input type="radio" name="q5">
+              <input type="radio" name="q5" value="save">
               <span>決定的なシュートを止める</span>
             </label>
-
             <label class="option">
-              <input type="radio" name="q5">
+              <input type="radio" name="q5" value="tackle">
               <span>相手からボールを奪う</span>
             </label>
 
-
-            <h3>Q6. 推し選手として応援したいのは？</h3>
-
+            <div class="question-title">Q6. 推し選手として応援したいのは？</div>
             <label class="option">
-              <input type="radio" name="q6">
+              <input type="radio" name="q6" value="guardian">
               <span>チームを守る選手</span>
             </label>
-
             <label class="option">
-              <input type="radio" name="q6">
+              <input type="radio" name="q6" value="lastWall">
               <span>最後の砦となる選手</span>
             </label>
 
@@ -528,14 +411,13 @@
           `;
         }
 
-
-        document.getElementById("branchQuestion").innerHTML = html;
-
+        const branchContainer = document.getElementById("branchQuestion");
+        branchContainer.innerHTML = html;
         document.getElementById("resultButton").style.display = "block";
 
+        // 動的追加された要素へスムーズにスクロール
+        branchContainer.scrollIntoView({ behavior: "smooth" });
       }
-
     </script>
-
   </body>
 </html>
