@@ -103,6 +103,30 @@
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
 
+    /* Excelデータの表示 */
+    #stats-list {
+    margin-top: 16px;
+  }
+
+  .data-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 4px;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    font-size: 14px;
+  }
+
+  .data-stat-row strong {
+    color: var(--lime);
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .data-stat-row:last-child {
+    border-bottom: none;
+  }
 /* Brand and section details */
 .brand-accent { color: var(--lime); }
 .section-subtitle { color: var(--muted); font-size: 10px; font-weight: 500; }
