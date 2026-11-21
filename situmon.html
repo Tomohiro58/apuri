@@ -275,9 +275,10 @@
 
         <!-- 結果ボタン -->
         <div id="resultButton">
-          <a href="RESULT.html" class="btn-result">
-            分析結果を表示する ➔
-          </a>
+         <a href="result.html" class="btn-result"
+         onclick="return finishDiagnosis(event)">
+         分析結果を表示する ➔
+         </a>
         </div>
 
       </div>
@@ -285,139 +286,306 @@
 
 
     <script>
-      function showBranch() {
-        const q1 = document.querySelector('input[name="q1"]:checked');
+     
+// FOOTBALL DNA 診断処理
 
-        if (!q1) {
-          alert("Q1を選択してください");
-          return;
-        }
+// Q1～Q4の回答後、Q1に応じてQ5・Q6を表示
+function showBranch() {
+  const answers = {};
 
-        let html = "";
+  // Q1～Q4の回答を確認
+  for (let i = 1; i <= 4; i++) {
+    const selected = document.querySelector(
+      `input[name="q${i}"]:checked`
+    );
 
-        // パス型
-        if (q1.value === "pass") {
-          html = `
-          <div class="question-box">
+    if (!selected) {
+      alert(`Q${i}を選択してください`);
+      return;
+    }
 
-            <div class="question-title">Q5. 試合を見るとき気になるのは？</div>
-            <label class="option">
-              <input type="radio" name="q5" value="control">
-              <span>どちらが試合を支配しているか</span>
-            </label>
-            <label class="option">
-              <input type="radio" name="q5" value="chance">
-              <span>パスでチャンスを作ること</span>
-            </label>
+    answers[`q${i}`] = selected.value;
+  }
 
-            <div class="question-title">Q6. 推し選手として応援したいのは？</div>
-            <label class="option">
-              <input type="radio" name="q6" value="playmaker">
-              <span>試合を組み立てる選手</span>
-            </label>
-            <label class="option">
-              <input type="radio" name="q6" value="assister">
-              <span>アシストする選手</span>
-            </label>
+  const q1 = answers.q1;
+  let html = "";
 
-          </div>
-          `;
-        }
+  // パス型
+  if (q1 === "pass") {
+    html = `
+      <div class="question-box">
+        <div class="question-title">Q5. 試合を見るとき気になるのは？</div>
+        <label class="option">
+          <input type="radio" name="q5" value="control">
+          <span>どちらが試合を支配しているか</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q5" value="chance">
+          <span>パスでチャンスを作ること</span>
+        </label>
 
-        // ドリブル型
-        else if (q1.value === "dribble") {
-          html = `
-          <div class="question-box">
+        <div class="question-title">Q6. 推し選手として応援したいのは？</div>
+        <label class="option">
+          <input type="radio" name="q6" value="playmaker">
+          <span>試合を組み立てる選手</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q6" value="assister">
+          <span>アシストする選手</span>
+        </label>
+      </div>
+    `;
+  }
 
-            <div class="question-title">Q5. 好きなプレーは？</div>
-            <label class="option">
-              <input type="radio" name="q5" value="skill">
-              <span>ドリブルで抜く</span>
-            </label>
-            <label class="option">
-              <input type="radio" name="q5" value="sprint">
-              <span>スピードで先に追いつく</span>
-            </label>
+  // ドリブル型
+  else if (q1 === "dribble") {
+    html = `
+      <div class="question-box">
+        <div class="question-title">Q5. 好きなプレーは？</div>
+        <label class="option">
+          <input type="radio" name="q5" value="skill">
+          <span>ドリブルで抜く</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q5" value="sprint">
+          <span>スピードで先に追いつく</span>
+        </label>
 
-            <div class="question-title">Q6. チームのヒーローだと思うのは？</div>
-            <label class="option">
-              <input type="radio" name="q6" value="gameChanger">
-              <span>ドリブルで流れを変えた選手</span>
-            </label>
-            <label class="option">
-              <input type="radio" name="q6" value="heroScorer">
-              <span>ゴールを決めた選手</span>
-            </label>
+        <div class="question-title">Q6. チームのヒーローだと思うのは？</div>
+        <label class="option">
+          <input type="radio" name="q6" value="gameChanger">
+          <span>ドリブルで流れを変えた選手</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q6" value="heroScorer">
+          <span>ゴールを決めた選手</span>
+        </label>
+      </div>
+    `;
+  }
 
-          </div>
-          `;
-        }
+  // シュート型
+  else if (q1 === "shoot") {
+    html = `
+      <div class="question-box">
+        <div class="question-title">Q5. PKで一番かっこいいと思うのは？</div>
+        <label class="option">
+          <input type="radio" name="q5" value="power">
+          <span>強烈なシュートを決める</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q5" value="placement">
+          <span>冷静にコースへ決める</span>
+        </label>
 
-        // シュート型
-        else if (q1.value === "shoot") {
-          html = `
-          <div class="question-box">
+        <div class="question-title">Q6. 推し選手に期待する活躍は？</div>
+        <label class="option">
+          <input type="radio" name="q6" value="decisive">
+          <span>最後まで決定的な仕事をする</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q6" value="clutch">
+          <span>チームが苦しい時に活躍する</span>
+        </label>
+      </div>
+    `;
+  }
 
-            <div class="question-title">Q5. PKで一番かっこいいと思うのは？</div>
-            <label class="option">
-              <input type="radio" name="q5" value="power">
-              <span>強烈なシュートを決める</span>
-            </label>
-            <label class="option">
-              <input type="radio" name="q5" value="placement">
-              <span>冷静にコースへ決める</span>
-            </label>
+  // 守備型
+  else if (q1 === "defense") {
+    html = `
+      <div class="question-box">
+        <div class="question-title">Q5. 守備の選手に魅力を感じるのは？</div>
+        <label class="option">
+          <input type="radio" name="q5" value="save">
+          <span>決定的なシュートを止める</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q5" value="tackle">
+          <span>相手からボールを奪う</span>
+        </label>
 
-            <div class="question-title">Q6. 推し選手に期待する活躍は？</div>
-            <label class="option">
-              <input type="radio" name="q6" value="decisive">
-              <span>最後まで決定的な仕事をする</span>
-            </label>
-            <label class="option">
-              <input type="radio" name="q6" value="clutch">
-              <span>チームが苦しい時に活躍する</span>
-            </label>
+        <div class="question-title">Q6. 推し選手として応援したいのは？</div>
+        <label class="option">
+          <input type="radio" name="q6" value="guardian">
+          <span>チームを守る選手</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="q6" value="lastWall">
+          <span>最後の砦となる選手</span>
+        </label>
+      </div>
+    `;
+  }
 
-          </div>
-          `;
-        }
+  const branchContainer = document.getElementById("branchQuestion");
+  branchContainer.innerHTML = html;
 
-        // 守備型
-        else if (q1.value === "defense") {
-          html = `
-          <div class="question-box">
+  // Q5・Q6の回答が終わるまで結果ボタンは表示しない
+  document.getElementById("resultButton").style.display = "none";
 
-            <div class="question-title">Q5. 守備の選手に魅力を感じるのは？</div>
-            <label class="option">
-              <input type="radio" name="q5" value="save">
-              <span>決定的なシュートを止める</span>
-            </label>
-            <label class="option">
-              <input type="radio" name="q5" value="tackle">
-              <span>相手からボールを奪う</span>
-            </label>
+  // Q5・Q6の回答を確認
+  branchContainer.querySelectorAll('input[name="q5"], input[name="q6"]')
+    .forEach(input => {
+      input.addEventListener("change", checkBranchAnswers);
+    });
 
-            <div class="question-title">Q6. 推し選手として応援したいのは？</div>
-            <label class="option">
-              <input type="radio" name="q6" value="guardian">
-              <span>チームを守る選手</span>
-            </label>
-            <label class="option">
-              <input type="radio" name="q6" value="lastWall">
-              <span>最後の砦となる選手</span>
-            </label>
+  branchContainer.scrollIntoView({ behavior: "smooth" });
+}
 
-          </div>
-          `;
-        }
 
-        const branchContainer = document.getElementById("branchQuestion");
-        branchContainer.innerHTML = html;
-        document.getElementById("resultButton").style.display = "block";
+// Q5・Q6の両方に回答したか確認
+function checkBranchAnswers() {
+  const q5 = document.querySelector('input[name="q5"]:checked');
+  const q6 = document.querySelector('input[name="q6"]:checked');
 
-        // 動的追加された要素へスムーズにスクロール
-        branchContainer.scrollIntoView({ behavior: "smooth" });
-      }
+  document.getElementById("resultButton").style.display =
+    q5 && q6 ? "block" : "none";
+}
+
+
+// タイプ別の点数を計算
+function calculateResult() {
+  const answers = {};
+
+  for (let i = 1; i <= 6; i++) {
+    const selected = document.querySelector(
+      `input[name="q${i}"]:checked`
+    );
+
+    if (!selected) {
+      alert(`Q${i}を選択してください`);
+      return null;
+    }
+
+    answers[`q${i}`] = selected.value;
+  }
+
+  const scores = {
+    dribbler: 0,
+    striker: 0,
+    passer: 0,
+    defender: 0,
+    goalkeeper: 0
+  };
+
+  // 回答ごとの加点ルール
+  const scoring = {
+    q1: {
+      pass: "passer",
+      dribble: "dribbler",
+      shoot: "striker",
+      defense: "defender"
+    },
+    q2: {
+      buildUp: "passer",
+      scorer: "striker",
+      speed: "dribbler",
+      stopper: "defender"
+    },
+    q3: {
+      cross: "passer",
+      middle: "striker",
+      dribbleGoal: "dribbler",
+      passWork: "passer"
+    },
+    q4: {
+      possession: "passer",
+      highScore: "striker",
+      solidDefense: "defender",
+      stamina: "dribbler"
+    },
+    q5: {
+      control: "passer",
+      chance: "passer",
+      skill: "dribbler",
+      sprint: "dribbler",
+      power: "striker",
+      placement: "striker",
+      save: "goalkeeper",
+      tackle: "defender"
+    },
+    q6: {
+      playmaker: "passer",
+      assister: "passer",
+      gameChanger: "dribbler",
+      heroScorer: "striker",
+      decisive: "striker",
+      clutch: "striker",
+      guardian: "goalkeeper",
+      lastWall: "defender"
+    }
+  };
+
+  // Q1～Q4は1・2点、Q5・Q6は2点
+  const weights = {
+    q1: 2,
+    q2: 1,
+    q3: 1,
+    q4: 1,
+    q5: 2,
+    q6: 2
+  };
+
+  // 全回答を点数化
+  for (let i = 1; i <= 6; i++) {
+    const question = `q${i}`;
+    const answer = answers[question];
+    const type = scoring[question][answer];
+
+    if (type) {
+      scores[type] += weights[question];
+    }
+  }
+
+  // 最も点数が高いタイプを取得
+  const maxScore = Math.max(...Object.values(scores));
+  const candidates = Object.keys(scores).filter(
+    type => scores[type] === maxScore
+  );
+
+  // 同点の場合はQ1の好みを優先
+  const q1Type = scoring.q1[answers.q1];
+  const resultType = candidates.includes(q1Type)
+    ? q1Type
+    : candidates[0];
+
+  return {
+    type: resultType,
+    scores: scores,
+    answers: answers
+  };
+}
+
+
+// 結果を保存して結果ページへ移動
+function finishDiagnosis(event) {
+  event.preventDefault();
+
+  const result = calculateResult();
+
+  if (!result) {
+    return false;
+  }
+
+  sessionStorage.setItem(
+    "footballDiagnosis",
+    JSON.stringify(result)
+  );
+
+  location.href = "result.html";
+  return false;
+}
+
+
+// Q1を変更した場合、以前の分岐回答をリセット
+document.querySelectorAll('input[name="q1"]').forEach(input => {
+  input.addEventListener("change", () => {
+    document.getElementById("branchQuestion").innerHTML = "";
+    document.getElementById("resultButton").style.display = "none";
+  });
+});
+
     </script>
   </body>
 </html>
