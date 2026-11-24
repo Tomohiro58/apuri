@@ -16,8 +16,8 @@
 
     <section class="page-heading">
       <div class="eyebrow">ANALYSIS COMPLETE</div>
-      <h1>新しい推し候補を発見。</h1>
-      <p>あなたの好みをもとに、プレースタイルが合う選手をピックアップしました。</p>
+    <h1>あなたに合う選手タイプを発見。</h1>
+    <p>あなたの好みをもとに、プレースタイルのタイプを診断しました。</p>
     </section>
 
     <div class="main-grid">
@@ -43,19 +43,37 @@
 
       <div class="right-column">
         <section class="panel stats-panel">
-          <div class="section-title">PLAY STYLE ANALYSIS</div>
-          <div class="score-item"><div class="score-header"><span>スピード</span><span class="score-value">92%</span></div><div class="score-bar"><div class="score-fill" data-score="92"></div></div></div>
-          <div class="score-item"><div class="score-header"><span>ドリブル</span><span class="score-value">88%</span></div><div class="score-bar"><div class="score-fill" data-score="88"></div></div></div>
-          <div class="score-item"><div class="score-header"><span>パス</span><span class="score-value">74%</span></div><div class="score-bar"><div class="score-fill" data-score="74"></div></div></div>
-          <div class="score-item"><div class="score-header"><span>守備</span><span class="score-value">61%</span></div><div class="score-bar"><div class="score-fill" data-score="61"></div></div></div>
-          <p class="stat-note">※ 表示値はデザイン確認用のサンプルです。実際に使う際は診断ロジックや選手データに接続してください。</p>
-        </section>
+  <div class="section-title">2022 SEASON DATA</div>
+
+  <div id="stats-list">
+    <p>データを読み込んでいます...</p>
+  </div>
+
+  <p class="stat-note" id="data-note">
+    ※ 2022年度の収録データをもとにした参考値です。
+  </p>
+</section>
         <section class="panel discover-panel">
           <div class="section-title">NEXT DISCOVERY</div>
           <div class="discover-content"><div class="mini-pitch" aria-hidden="true">↗</div><p><strong>次の推し候補を探そう</strong>似ているプレースタイルの選手を見つけて、まだ知らない魅力に出会おう。</p></div>
         </section>
       </div>
     </div>
+     <section class="panel reason-panel">
+    <div class="section-title">WHY THIS TYPE?</div>
+
+    <h2 id="reason-title">診断理由</h2>
+    <p id="reason-description">
+        診断結果を読み込んでいます。
+    </p>
+
+    <h3>診断スコアの内訳</h3>
+    <div id="score-breakdown"></div>
+
+    <p class="reason-note">
+        ※質問への回答をもとに各タイプの点数を集計しています。
+    </p>
+    </section>
 
     <div class="actions">
       <button class="button button-primary" onclick="shareResult()">結果をシェアする ↗</button>
